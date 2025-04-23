@@ -33,7 +33,7 @@
       }).then(function (res) {
         const userInput = res.value;
 
-        fetch('https://residency-chatbot-backend.onrender.com/query', {
+        fetch('https://residency-chatbot-backend.onrender.com/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: userInput })
