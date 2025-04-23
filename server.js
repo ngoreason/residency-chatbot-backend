@@ -4,6 +4,17 @@ const bodyParser = require('body-parser');
 const dialogflow = require('@google-cloud/dialogflow');
 const uuid = require('uuid');
 const cors = require('cors');
+const {GoogleAuth} = require('google-auth-library');
+
+// Load credentials from the environment variable
+const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
+// Create a Dialogflow session client with credentials
+const client = new dialogflow.SessionsClient({
+  credentials: credentials
+});
+
+// Continue with your Dialogflow setup and API calls...
 
 const app = express();
 app.use(cors());
