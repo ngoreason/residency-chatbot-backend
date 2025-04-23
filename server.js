@@ -1,8 +1,4 @@
 const path = require('path');
-app.use(express.static(path.join(__dirname, 'public')));
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'residency-chatbot.html'));
-});
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -24,6 +20,10 @@ const client = new dialogflow.SessionsClient({
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'residency-chatbot.html'));
+});
 
 // Replace with your actual file name and project ID
 const sessionClient = new dialogflow.SessionsClient({
