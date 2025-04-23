@@ -31,20 +31,23 @@
           placeholder: 'Type your question here...'
         }
       }).then(function (res) {
-fetch('https://residency-chatbot-backend.onrender.com/query', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ message: userInput })
-})
-.then(response => response.json())
-.then(data => {
-  botui.message.add({ content: data.reply }).then(ask);
-})
-.catch(error => {
-  botui.message.add({ content: 'Oops! Something went wrong.' });
-  console.error(error);
-});
-      })
+        const userInput = res.value;
+
+        fetch('https://residency-chatbot-backend.onrender.com/query', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: userInput })
+        })
+        .then(response => response.json())
+        .then(data => {
+          botui.message.add({ content: data.reply }).then(ask);
+        })
+        .catch(error => {
+          botui.message.add({ content: 'Oops! Something went wrong.' });
+          console.error(error);
+        });
+      });
+    }
   </script>
 </body>
 </html>
