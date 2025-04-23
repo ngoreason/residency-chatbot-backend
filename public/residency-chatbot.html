@@ -36,16 +36,14 @@ fetch('https://residency-chatbot-backend.onrender.com/query', {
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ message: userInput })
 })
-        })
-        .then(response => response.json())
-        .then(data => {
-          botui.message.add({ content: data.reply }).then(ask);
-        })
-        .catch(error => {
-          botui.message.add({ content: 'Oops! Something went wrong.' });
-          console.error(error);
-        });
-      });
+.then(response => response.json())
+.then(data => {
+  botui.message.add({ content: data.reply }).then(ask);
+})
+.catch(error => {
+  botui.message.add({ content: 'Oops! Something went wrong.' });
+  console.error(error);
+});
     }
   </script>
 </body>
