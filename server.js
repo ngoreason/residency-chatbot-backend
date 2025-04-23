@@ -45,7 +45,7 @@ app.post('/query', async (req, res) => {
 
 app.post('/chat', async (req, res) => {
   const sessionId = uuid.v4();
-  const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
+  const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);}
 
   const request = {
     session: sessionPath,
