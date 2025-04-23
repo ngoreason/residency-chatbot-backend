@@ -31,12 +31,11 @@
           placeholder: 'Type your question here...'
         }
       }).then(function (res) {
-        fetch('http://localhost:3000/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ message: res.value })
+fetch('https://residency-chatbot-backend.onrender.com/query', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ message: userInput })
+})
         })
         .then(response => response.json())
         .then(data => {
