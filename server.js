@@ -32,6 +32,17 @@ const sessionClient = new dialogflow.SessionsClient({
 
 const projectId = 'residencyfaqbot-dojy'; // e.g., dialogflow-demo-123456
 
+app.post('/query', async (req, res) => {
+  try {
+    const userMessage = req.body.message;
+    // Your Dialogflow or chatbot logic here
+    res.json({ reply: 'Your response here' });
+  } catch (error) {
+    console.error('Error handling /query:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.post('/chat', async (req, res) => {
   const sessionId = uuid.v4();
   const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
