@@ -45,7 +45,7 @@ app.post('/query', async (req, res) => {
 
 app.post('/chat', async (req, res) => {
   const sessionId = uuid.v4();
-  const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
+  const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId); // Make sure 'projectId' is defined
 
   const request = {
     session: sessionPath,
@@ -56,16 +56,16 @@ app.post('/chat', async (req, res) => {
       },
     },
   };
-}
 
+  // Make sure you handle the Dialogflow request here
   try {
-    const responses = await sessionClient.detectIntent(request);
-    const result = responses[0].queryResult;
-    res.json({ reply: result.fulfillmentText });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error connecting to Dialogflow');
+    const [response] = await sessionClient.detectIntent(request);
+    res.json({ reply: response.queryResult.fulfillmentText });
+  } catch (error) {
+    console.error('ERROR:', error);
+    res.status(500).send('Something went wrong');
   }
 });
+
 
 app.listen(3000, () => console.log('Server running at http://localhost:3000'));
