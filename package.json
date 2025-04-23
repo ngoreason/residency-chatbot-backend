@@ -13,6 +13,7 @@
   "dependencies": {
     "@google-cloud/dialogflow": "^7.0.1",
     "@grpc/grpc-js": "^1.13.3",
+    "cors": "^2.8.5",
     "dialogflow": "^4.0.3",
     "express": "^5.1.0",
     "json-bigint": "^1.0.0",
