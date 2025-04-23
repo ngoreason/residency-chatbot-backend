@@ -1,3 +1,4 @@
+const CREDENTIALS = require('./credentials.json');
 const express = require('express');
 const bodyParser = require('body-parser');
 const dialogflow = require('@google-cloud/dialogflow');
