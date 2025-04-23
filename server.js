@@ -1,11 +1,17 @@
-const path = require('path');
-
-const express = require('express');
 const bodyParser = require('body-parser');
 const dialogflow = require('@google-cloud/dialogflow');
 const uuid = require('uuid');
 const cors = require('cors');
 const {GoogleAuth} = require('google-auth-library');
+const path = require('path');
+const express = require('express');
+const app = express();
+
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from public folder
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'residency-chatbot.html')); // Serve the chatbot HTML page
+});
 
 // Load credentials from the environment variable
 const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
@@ -14,6 +20,7 @@ const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 const client = new dialogflow.SessionsClient({
   credentials: credentials
 });
+
 
 // Continue with your Dialogflow setup and API calls...
 
