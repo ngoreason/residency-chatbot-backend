@@ -34,8 +34,8 @@ const sessionClient = new dialogflow.SessionsClient({
 
 const projectId = 'residencyfaqbot-dojy'; // Replace with your real project ID
 
-app.post('/query', async (req, res) => {
-  const sessionId = uuidv4();
+app.post('/chat', async (req, res) => {
+  const sessionId = uuid.v4();
   const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
 
   const request = {
@@ -49,14 +49,14 @@ app.post('/query', async (req, res) => {
   };
 
   try {
-    const responses = await sessionClient.detectIntent(request);
-    const result = responses[0].queryResult;
-    res.json({ reply: result.fulfillmentText });
+    const [response] = await sessionClient.detectIntent(request);
+    res.json({ reply: response.queryResult.fulfillmentText });
   } catch (error) {
-    console.error('Dialogflow error:', error);
-    res.status(500).json({ reply: 'Sorry, something went wrong with the chatbot.' });
+    console.error('ERROR in /chat route:', error);
+    res.status(500).send('Something went wrong');
   }
 });
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
