@@ -19,33 +19,18 @@ const client = new dialogflow.SessionsClient({
 
 const app = express();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'residency-chatbot.html'));
+
+const sessionClient = new SessionsClient({
+  keyFilename: './credentials.json'
 });
 
-// Replace with your actual file name and project ID
-const sessionClient = new dialogflow.SessionsClient({
-  keyFilename: 'residencyfaqbot-dojy-1278931c56e1.json'
-});
-
-const projectId = 'residencyfaqbot-dojy'; // e.g., dialogflow-demo-123456
+const projectId = 'residencyfaqbot-dojy'; // Replace with your real project ID
 
 app.post('/query', async (req, res) => {
-  try {
-    const userMessage = req.body.message;
-    // Your Dialogflow or chatbot logic here
-    res.json({ reply: 'Your response here' });
-  } catch (error) {
-    console.error('Error handling /query:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-app.post('/chat', async (req, res) => {
-  const sessionId = uuid.v4();
-  const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId); // Make sure 'projectId' is defined
+  const sessionId = uuidv4();
+  const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
 
   const request = {
     session: sessionPath,
@@ -57,15 +42,17 @@ app.post('/chat', async (req, res) => {
     },
   };
 
-  // Make sure you handle the Dialogflow request here
   try {
-    const [response] = await sessionClient.detectIntent(request);
-    res.json({ reply: response.queryResult.fulfillmentText });
+    const responses = await sessionClient.detectIntent(request);
+    const result = responses[0].queryResult;
+    res.json({ reply: result.fulfillmentText });
   } catch (error) {
-    console.error('ERROR:', error);
-    res.status(500).send('Something went wrong');
+    console.error('Dialogflow error:', error);
+    res.status(500).json({ reply: 'Sorry, something went wrong with the chatbot.' });
   }
 });
 
-
-app.listen(3000, () => console.log('Server running at http://localhost:3000'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
