@@ -16,44 +16,39 @@
   <!-- Load BotUI -->
   <script src="https://cdn.jsdelivr.net/npm/botui/build/botui.min.js"></script>
 
-  <script>
-    var botui = new BotUI('botui-app');
+<script>
+  var botui = new BotUI('botui-app');
 
-    botui.message.add({
-      content: 'Hi! I\'m your residency chatbot. Ask me anything about the program!'
-    }).then(function () {
-      ask();
-    });
-
-    function ask() {
-      botui.action.text({
-        action: {
-          placeholder: 'Type your question here...'
-        }
-      }).then(function (res) {
-        const userInput = res.value;
-
-fetch('https://residency-chatbot-backend.onrender.com/chat', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ message: userInput })
-})
-  .then(response => response.json())
-  .then(data => {
-    if (data.reply) {
-      botui.message.add({ content: data.reply }).then(ask);
-    } else {
-      throw new Error('No reply from the backend');
-    }
-  })
-  .catch(error => {
-    botui.message.add({ content: 'Oops! Something went wrong.' });
-    console.error(error);
+  botui.message.add({
+    content: 'Hi! I\'m your residency chatbot. Ask me anything about the program!'
+  }).then(function () {
+    ask();
   });
 
-        });
+  function ask() {
+    botui.action.text({
+      action: {
+        placeholder: 'Type your question here...'
+      }
+    }).then(function (res) {
+      const userInput = res.value;
+
+      fetch('https://residency-chatbot-backend.onrender.com/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userInput })
+      })
+      .then(response => response.json())
+      .then(data => {
+        botui.message.add({ content: data.reply }).then(ask);
+      })
+      .catch(error => {
+        botui.message.add({ content: 'Oops! Something went wrong.' });
+        console.error(error);
       });
-    }
-  </script>
+    });
+  }
+</script>
+
 </body>
 </html>
