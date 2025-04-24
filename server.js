@@ -29,8 +29,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const sessionClient = new dialogflow.SessionsClient({
-  keyFilename: './credentials.json'
+  credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS)
 });
+
 
 const projectId = 'residencyfaqbot-dojy'; // Replace with your real project ID
 
