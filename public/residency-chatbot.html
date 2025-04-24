@@ -33,21 +33,26 @@
       }).then(function (res) {
         const userInput = res.value;
 
-        fetch('https://residency-chatbot-backend.onrender.com/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: userInput })
-        })
-        .then(response => response.json())
-        .then(data => {
-          botui.message.add({ content: data.reply }).then(ask);
-        })
-        .catch(error => {
-          botui.message.add({ content: 'Oops! Something went wrong.' });
-          console.error(error);
+fetch('https://residency-chatbot-backend.onrender.com/chat', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ message: userInput })
+})
+  .then(response => response.json())
+  .then(data => {
+    if (data.reply) {
+      botui.message.add({ content: data.reply }).then(ask);
+    } else {
+      throw new Error('No reply from the backend');
+    }
+  })
+  .catch(error => {
+    botui.message.add({ content: 'Oops! Something went wrong.' });
+    console.error(error);
+  });
+
         });
       });
-    }
   </script>
 </body>
 </html>
